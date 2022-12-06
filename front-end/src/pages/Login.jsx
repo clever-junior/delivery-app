@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Button from '../components/Button';
 import GenericInput from '../components/Input';
 import LoginContext from '../context/LoginContext';
+import userLogin from '../service/requests';
 
 function Login() {
   const { email, setEmail, password, setPassword } = useContext(LoginContext);
@@ -11,6 +12,13 @@ function Login() {
   const [isDisabled] = useState(false);
 
   const disabledBtn = () => !(emailPattern.test(email) && password.length >= NUM);
+
+  const handleButton = async (e) => {
+    e.preventDefault();
+    const result = await userLogin({ email, password });
+
+    console.log(result);
+  };
 
   return (
     <form>
@@ -36,6 +44,7 @@ function Login() {
         dataTestId="common_login__button-login"
         type="submit"
         name="login"
+        onClick={ handleButton }
         disabled={ disabledBtn() }
         text="Login"
       />
