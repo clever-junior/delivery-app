@@ -12,7 +12,7 @@ model User {
   name String @db.VarChar(255)
   email String @db.VarChar(255) 
   password String
-  role String 
+  role String @db.VarChar(12) 
   sales Sale[]
 }
 
@@ -22,13 +22,25 @@ model Sale {
   deliveryAddress String
   deliveryNumber String
   saleDate DateTime @default(now())
+  status String @default("PENDENTE")
   userId Int @unique 
   user User @relation(fields: [userId], references: [id])
+  saleprodut SaleProduct[]
 }
 
-model Produt {
+model Product {
   id Int @id @unique @default(autoincrement())
   name String @db.VarChar(255)
   price Decimal
   urlImage String
+  saleproduct SaleProduct[]
+}
+
+model SaleProduct {
+  sale Sale @relation(fields: [saleId], references: [id])
+  saleId Int
+  product Product @relation(fields: [productId], references: [id])
+  productId Int
+  quantity Int
+  @@id([saleId, productId])
 }
