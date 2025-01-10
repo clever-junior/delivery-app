@@ -1,12 +1,12 @@
 const RestError = require('../errors/RestError');
-const ProductORM = require('../model/ProductORM');
-const SaleORM = require('../model/SaleORM');
-const UserORM = require('../model/UserORM');
+// const ProductORM = require('../model/ProductORM');
+// const SaleORM = require('../model/SaleORM');
+// const UserORM = require('../model/UserORM');
 const { newSaleSchema, statusSchema } = require('./validation/saleSchema');
 const validateSchema = require('./validation/validateSchema');
 
 const validateSeller = async (sellerId) => {
-  const seller = await UserORM.findByPk(sellerId);
+  // const seller = await UserORM.findByPk(sellerId);
 
   if (!seller || seller.role !== 'seller') {
     throw new RestError(422, 'Invalid seller');
@@ -14,9 +14,9 @@ const validateSeller = async (sellerId) => {
 };
 
 const validateProducts = async (products) => {
-  const response = await ProductORM.findManyByPk(
-    ...products.map(({ id }) => id),
-  );
+  // const response = await ProductORM.findManyByPk(
+  //   ...products.map(({ id }) => id),
+  // );
 
   if (response.length < products.length) {
     throw new RestError(422, 'Some of the provided products do not exist');
@@ -29,13 +29,13 @@ const insertSale = async (sale) => {
   await validateSeller(sale.sellerId);
   await validateProducts(sale.products);
 
-  const result = await SaleORM.insertSale(value);
+  // const result = await SaleORM.insertSale(value);
 
-  return SaleORM.findByPk(result.id);
+  // return SaleORM.findByPk(result.id);
 };
 
 const findSaleById = async (id) => {
-  const response = await SaleORM.findByPk(id);
+  // const response = await SaleORM.findByPk(id);
 
   if (!response) {
     throw new RestError(404, 'Sale not found');
@@ -46,10 +46,10 @@ const findSaleById = async (id) => {
 
 const findUserSales = async (user) => {
   if (user.role === 'seller') {
-    return SaleORM.findBySeller(user.id);
+    // return SaleORM.findBySeller(user.id);
   }
 
-  return SaleORM.findByUser(user.id);
+  // return SaleORM.findByUser(user.id);
 };
 
 const updateStatus = async (id, status, user) => {
@@ -64,7 +64,7 @@ const updateStatus = async (id, status, user) => {
     throw new RestError(401, 'Unauthorized customer');
   }
 
-  await SaleORM.update(id, { status });
+  // await SaleORM.update(id, { status });
 
   return {
     ...sale,

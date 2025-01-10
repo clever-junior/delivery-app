@@ -1,10 +1,10 @@
-const ProductORM = require('../model/ProductORM');
+// const ProductORM = require('../model/ProductORM');
 const RestError = require('../errors/RestError');
 
-const getAll = () => ProductORM.getAll();
+// const getAll = () => ProductORM.getAll();
 
 const findById = async (id) => {
-  const result = await ProductORM.findByPk(id);
+  // const result = await ProductORM.findByPk(id);
 
   if (!result) {
     throw new RestError(404, 'Product not found');
@@ -14,7 +14,7 @@ const findById = async (id) => {
 };
 
 const productService = {
-  getAll,
+  // getAll,
   findById,
 };
 

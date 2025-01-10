@@ -9,21 +9,21 @@ datasource db {
 
 model User {
   id Int @id @unique
-  name String @db.VarChar(255)
-  email String @db.VarChar(255) 
+  name String 
+  email String 
   password String
-  role String @db.VarChar(12) 
+  role String 
   sales Sale[]
 }
 
 model Sale {
   id Int @id @default(autoincrement())
-  totalPrice Int
-  deliveryAddress String
-  deliveryNumber String
-  saleDate DateTime @default(now())
+  totalPrice Int @map("total_price")
+  deliveryAddress String @map("delivery_address")
+  deliveryNumber String @map("delivery_number")
+  saleDate DateTime @default(now()) @map("sale_date")
   status String @default("PENDENTE")
-  userId Int @unique 
+  userId Int @unique @map("user_id") 
   user User @relation(fields: [userId], references: [id])
   saleprodut SaleProduct[]
 }
@@ -32,15 +32,15 @@ model Product {
   id Int @id @unique @default(autoincrement())
   name String @db.VarChar(255)
   price Decimal
-  urlImage String
+  urlImage String @map("url_image")
   saleproduct SaleProduct[]
 }
 
 model SaleProduct {
   sale Sale @relation(fields: [saleId], references: [id])
-  saleId Int
+  saleId Int @map("sale_id")
   product Product @relation(fields: [productId], references: [id])
-  productId Int
+  productId Int @map("product_id")
   quantity Int
   @@id([saleId, productId])
 }

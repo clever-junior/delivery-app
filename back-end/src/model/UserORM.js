@@ -1,23 +1,32 @@
-const { Op } = require('sequelize');
-const { User } = require('../database/models');
+// const { Op } = require('sequelize');
+// const { User } = require('../database/models');
+const { User } = require("./User");
 
 const create = async ({ email, password, name, role }) => {
   const id = Math.floor((Date.now() * Math.random()) / 10000);
-  
+
+  const user = new User();
+
   if (!role) {
-    const user = await User.create({ id, email, password, name, role: 'customer' });
+    const response = user.create({ id, email, password, name, role: 'customer' });
     
-    return user;
+    return response;
   }
 
-  const user = await User.create({ id, email, password, name, role });
+  const response = user.create({ id, email, password, name, role });
 
-  return user;
+  return response;
 };
 
-const findByPk = async (id) => User.findByPk(id);
+const findByPk = async (id) =>  { 
+  const user = new User();
+  return user.findByPk(id);
+};
 
-const findByEmail = async (email) => User.findOne({ where: { email } });
+const findByEmail = (email) => {
+  const user = new User();
+  return user.findOne({ where: { email } });
+};
 
 const findAll = async (id) => User.findAll({
   where: {
@@ -27,8 +36,11 @@ const findAll = async (id) => User.findAll({
   },
 }, { attributes: { exclude: ['password'] } });
 
-const findByEmailAndPassword = async (email, password) => (
-  User.findOne({ where: { email, password } }));
+const findByEmailAndPassword = async (email, password) => {
+  const user = new User();
+  const response = user.findOne({ where: { email, password } })
+  return response;
+};
 
 const destroy = async (id) => User.destroy({ where: { id } });
 
