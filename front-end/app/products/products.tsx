@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+'use client'
+
+import { useEffect, useState } from 'react';
 // import useProductsStore from
 // import { getAll } from
 import ProductCard from '../components/ProductCard';
 
 function Products() {
-  const array = useProductsStore((state) => state.products);
-  const cart = useProductsStore((state) => state.cart);
+  // const array = useProductsStore((state) => state.products);
+  // const cart = useProductsStore((state) => state.cart);
   const [totalPrice, setTotalPrice] = useState(0);
-  const history = useHistory();
+  // const history = useHistory();
 
-  const handleCheckout = () => history.push('/checkout');
+  // const handleCheckout = () => history.push('/checkout');
 
   useEffect(() => {
     async function getProducts() {
