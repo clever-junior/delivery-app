@@ -1,42 +1,41 @@
 import z from "zod";
+import { login, signUp } from "../controller/userController";
+import { loginSchema, userRegisterSchema } from "../schemas/userSchema";
 import { FastifyTypedInstance } from "../types";
-import { login } from "../controller/userController";
 // import verifyToken from "../middlewares/verifyTokenMiddleware";
 
-export async function userRoutes(app: FastifyTypedInstance) {
+export async function userRouter(app: FastifyTypedInstance) {
   app.post(
     '/login',
     {
       schema: {
-        tags: ['apps'],
+        tags: ['users'],
         description: 'Sign in a existent app',
-        body: z.object({
-          email: z.string().email(),
-          password: z.string(),
-        }),
+        body: loginSchema, 
         response: {
           200: z.string().describe('Login successfull'),
           401: z.string().describe('User not found')
         }
       },
     },
-    async (request, reply) => {
-      const { email, password } = request.body;
-
-      const token = await login({ email, password });
-
-      if (!token) {
-        return reply.status(401).send("User not found");
-      }
-
-      return reply.status(200).send(token);
-    }, 
+    login,
   );
 
-  // app.post(
-  //   '/register',
-  //   appController.appRegister,
-  // );
+  app.post(
+    '/register',
+    {
+      schema: {
+        tags: ['users'],
+        description: 'Sign up a unexistent user',
+        body: userRegisterSchema,
+        response: {
+          201: z.string().describe('Created'),
+          409: z.string().describe('Conflict')
+        }
+      }
+    },
+    signUp,
+  );
 
   // app.get(
   //   '/app',

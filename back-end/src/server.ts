@@ -3,11 +3,11 @@ import { fastifySwagger } from '@fastify/swagger';
 import { fastifySwaggerUi } from '@fastify/swagger-ui';
 import { fastify } from 'fastify';
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
-import { userRoutes } from './routes/userRouter';
+import { router } from './routes';
 
 const port = Number(process.env.PORT) || 3001;
 
-const server = fastify().withTypeProvider<ZodTypeProvider>();
+export const server = fastify().withTypeProvider<ZodTypeProvider>();
 
 // Plugin to allow frontend access the API 
 server.register(fastifyCors, { origin: "*" });
@@ -37,8 +37,7 @@ server.register(fastifySwaggerUi, {
 // });
 
 // Routes
-server.register(userRoutes, { prefix: "/user/" });
-
+router(server);
 
 //Server
 server.listen({ port }, (err, address) => {

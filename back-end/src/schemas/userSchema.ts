@@ -10,7 +10,7 @@ export const loginSchema = z.object({
     .nonempty(ALL_FIELDS_REQUIRED)
 });
 
-export type LoginSchema = z.infer<typeof loginSchema>
+export type Login = z.infer<typeof loginSchema>
 
 export const userRegisterSchema = z.object({
   name: z.string()
@@ -22,7 +22,7 @@ export const userRegisterSchema = z.object({
     .nonempty(ALL_FIELDS_REQUIRED),
 });
 
-export type UserSignUpSchema = z.infer<typeof userRegisterSchema>
+export type SignUp = z.infer<typeof userRegisterSchema>
 
 export const userCreateSchema = z.object({
   name: z.string()
@@ -33,7 +33,7 @@ export const userCreateSchema = z.object({
   password: z.string()
     .nonempty(ALL_FIELDS_REQUIRED),
   role: z.string()
-    .nonempty(ALL_FIELDS_REQUIRED),
+    .optional()
 });
 
-export type CreateUserSchema = z.infer<typeof userCreateSchema>
+export type CreateUser = z.infer<typeof userCreateSchema>

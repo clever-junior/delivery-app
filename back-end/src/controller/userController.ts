@@ -1,49 +1,57 @@
-import { findOne } from "../service/userService";
+import { FastifyReply, FastifyRequest } from "fastify";
+import { Login, SignUp } from "../schemas/userSchema";
+import { createUser, findUserByEmailAndPassword } from "../service/userService";
 
-export async function login(body: { email: string, password: string }) {
-  const { email, password } = body;
+export async function login(request: FastifyRequest<{ Body: Login }>, reply: FastifyReply) {
+  const { email, password } = request.body;
 
-  const token = await findOne({ email, password });
+  const { token, error } = await findUserByEmailAndPassword({ email, password });
 
-  return token;
+  if (error) {
+    return reply.status(401).send(error);
+  }
+
+  return reply.status(200).send(token);
 }
 
-  // async index(req, res) {
-  //   console.log(req.user);
+// async index(req, res) {
+//   console.log(req.user);
 
-  //   const { id } = req.user;
+//   const { id } = req.user;
 
-  //   const users = await userService.readAll(id);
+//   const users = await userService.readAll(id);
 
-  //   return res.status(200).json(users);
-  // },
+//   return res.status(200).json(users);
+// },
 
-  // async userRegister(request, reply: FastifyReply) {
-  //   const { email, name, password } = request.body;
+// async userRegister(request, reply: FastifyReply) {
+//   const { email, name, password } = request.body;
 
-  //   const data = { email, name, password };
+//   const data = { email, name, password };
 
-  //   // const token = await userService.create(data);
+//   // const token = await userService.create(data);
 
-  //   return reply.status(201).send();
-  //   // .json({ token });
-  // },
+//   return reply.status(201).send();
+//   // .json({ token });
+// },
 
-  // async createUser(request, reply) {
-  //   const { name, email, password, role } = request.body;
+export async function signUp(request: FastifyRequest<{ Body: SignUp }>, reply: FastifyReply) {
+  const data = request.body;
 
-  //   const data = { email, name, password, role };
+  const { status, error } = await createUser(data);
 
-  //   const user = await userService.createWithRole(data);
+  if (error) {
+    return reply.status(status).send(error)
+  }
 
-  //   return reply.status(201).json(user);
-  // },
+  return reply.status(status).send("Created");
+}
 
-  // async deleteUser(req, res) {
-  //   const { id } = req.params;
+// async deleteUser(req, res) {
+//   const { id } = req.params;
 
-  //   await userService.deleteUser(id);
+//   await userService.deleteUser(id);
 
-  //   return res.sendStatus(204);
-  // },
+//   return res.sendStatus(204);
+// },
 // };

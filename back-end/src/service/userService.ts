@@ -1,19 +1,28 @@
-import { findByEmailAndPassword } from "../model/userModel";
+import { create, findByEmail, findByEmailAndPassword } from "../model/userModel";
+import { Login, loginSchema, SignUp } from "../schemas/userSchema";
 
 const md5 = require('md5');
 
-export async function findOne(body: { email: string, password: string }): Promise<string | undefined> {
-  const { email, password } = body;
+export async function findUserByEmailAndPassword(data: Login) {
+  const result = loginSchema.safeParse(data);
 
-  const md5Pass = md5(password);
+  if (!result.success) {
+    return { error: result.error.issues[0].message }
+  }
+  else {
+    const { email, password } = data;
 
-  const user = await findByEmailAndPassword({ email, password: md5Pass });
-  
-  if (!user) { return }
+    const encryptedPassword = md5(password);
 
-  // const token = generateToken(user);
+    const user = await findByEmailAndPassword({ email, password: encryptedPassword });
 
-  return "token";
+    if (!user) { return { error: "User Not Found" } }
+
+    // const token = generateToken(user);
+
+    return { token: "token" };
+  }
+
 };
 
 // const readAll = async (id) => {
@@ -22,25 +31,27 @@ export async function findOne(body: { email: string, password: string }): Promis
 //   return users;
 // };
 
-// const create = async (data) => {
-//   validateSchema(userRegisterSchema, data, 400);
+export async function createUser(data: SignUp) {
+  const { name, email, password } = data;
 
-//   const validateUser = UserORM.findByEmail(data.email);
+  const findUser = await findByEmail(email);
 
-//   if (validateUser) {
-//     throw new RestError(409, 'User already exists');
-//   }
+  if (findUser)
+    return { status: 409, error: "User Already Exists" }
 
-//   const user = UserORM.create(data);
+  const encryptedPassword = md5(password);
 
-//   const token = generateToken(data);
+  const user = await create({ name, email, password: encryptedPassword });
 
-//   return token;
-// };
+  if (!user) 
+    return { status: 400, error: "User not created" }
+  // const token = generateToken(data);
 
-// const createWithRole = async (data) => {
-//   validateSchema(userCreateSchema, data, 400);
-  
+  return { status: 201 };
+};
+
+// export async function createWithRole(data: CreateUser) {
+
 //   const validateUser = await UserORM.findByEmail(data.email);
 
 //   if (validateUser) {

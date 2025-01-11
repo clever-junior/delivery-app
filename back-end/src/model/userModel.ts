@@ -2,31 +2,28 @@
 // const { User } = require('../database/models');
 
 import { PrismaClient } from "@prisma/client";
+import { SignUp } from "../schemas/userSchema";
 
-const { user } = new PrismaClient();
+const prisma = new PrismaClient();
 
-// const create = async ({ email, password, name, role }) => {
+export async function create(data: SignUp) {
+  const { email, password, name } = data;
 
-//   if (!role) {
-//     const response = user.create({ id, email, password, name, role: 'customer' });
-    
-//     return response;
-//   }
+  const user = prisma.user.create({ data: { email, password, name, role: 'CUSTOMER' } });
 
-//   const response = user.create({ id, email, password, name, role });
-
-//   return response;
-// };
+  return user;
+};
 
 // const findByPk = async (id) =>  { 
 //   const user = new User();
 //   return user.findByPk(id);
 // };
 
-// const findByEmail = (email) => {
-//   const user = new User();
-//   return user.findOne({ where: { email } });
-// };
+export async function findByEmail(email: string) {
+  const user = await prisma.user.findUnique({ where: { email }  });
+
+  return user;
+} 
 
 // const findAll = async (id) => User.findAll({
 //   where: {
@@ -37,7 +34,7 @@ const { user } = new PrismaClient();
 // }, { attributes: { exclude: ['password'] } });
 
 export async function findByEmailAndPassword({ email, password }: any) {
-  const reply = await user.findFirst({ where: { AND: { email, password} } });
+  const reply = await prisma.user.findFirst({ where: { AND: { email, password} } });
   return reply;
 };
 
