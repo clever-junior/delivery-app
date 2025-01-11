@@ -1,7 +1,7 @@
-import { create, findByEmail, findByEmailAndPassword } from "../model/userModel";
-import { Login, loginSchema, SignUp } from "../schemas/userSchema";
-
-const md5 = require('md5');
+import { create } from "domain";
+import md5 from "md5";
+import { findByEmailAndPassword, findByEmail } from "../model/userModel.js";
+import { Login, loginSchema, SignUp } from "../schemas/userSchema.js";
 
 export async function findUserByEmailAndPassword(data: Login) {
   const result = loginSchema.safeParse(data);

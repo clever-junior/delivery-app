@@ -6,7 +6,7 @@ interface IButtonProps {
   name: string
   disabled: boolean
   text: string
-  onClick?: (e: Event) => Promise<void>
+  onClick?: () => void
 }
 
 export function Button({ dataTestId, type, name, disabled, onClick, text }: IButtonProps) {
