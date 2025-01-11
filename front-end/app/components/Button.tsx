@@ -1,6 +1,15 @@
 // import PropTypes from 'prop-types';
 
-export function Button({ dataTestId, type, name, disabled, onClick, text }) {
+interface IButtonProps {
+  dataTestId: string
+  type: string
+  name: string
+  disabled: boolean
+  text: string
+  onClick?: (e: Event) => Promise<void>
+}
+
+export function Button({ dataTestId, type, name, disabled, onClick, text }: IButtonProps) {
   return (
     <button
       data-testid={ dataTestId }
@@ -14,10 +23,10 @@ export function Button({ dataTestId, type, name, disabled, onClick, text }) {
   );
 }
 
-Button.defaultProps = {
-  disabled: false,
-  onClick: () => {},
-};
+// Button.defaultProps = {
+//   disabled: false,
+//   onClick: () => {},
+// };
 
 // Button.propTypes = {
 //   dataTestId: PropTypes.string.isRequired,
