@@ -1,13 +1,13 @@
-const RestError = require('../../errors/RestError');
+// const RestError = require('../../errors/RestError');
 
-function validateSchema(schema, obj, status = 422) {
-  const { error, value } = schema.validate(obj);
+// function validateSchema(schema, obj, status = 422) {
+//   const { error, value } = schema.validate(obj);
 
-  if (error) {
-    throw new RestError(status, error.message);
-  }
+//   if (error) {
+//     throw new RestError(status, error.message);
+//   }
 
-  return value;
-}
+//   return value;
+// }
 
-module.exports = validateSchema;
+// module.exports = validateSchema;

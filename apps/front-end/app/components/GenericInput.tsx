@@ -22,6 +22,7 @@ export function GenericInput({
     <label htmlFor={ selector }>
       { fieldName }
       <input
+        className="rounded-lg px-2 py-1 text-gray-400"
         data-testid={ testId }
         type={ type }
         value={ input }

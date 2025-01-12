@@ -1,8 +1,8 @@
-const { Router } = require('express');
-const imageController = require('../controller/imageController');
+// const { Router } = require('express');
+// const imageController = require('../controller/imageController');
 
-const imageRouter = Router();
+// const imageRouter = Router();
 
-imageRouter.get('/:fileName', imageController.getImage);
+// imageRouter.get('/:fileName', imageController.getImage);
 
-module.exports = imageRouter;
+// module.exports = imageRouter;

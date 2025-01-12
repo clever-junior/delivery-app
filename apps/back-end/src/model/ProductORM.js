@@ -1,26 +1,26 @@
-const { Op } = require('sequelize');
-const { Product } = require('../database/models');
+// const { Op } = require('sequelize');
+// const { Product } = require('../database/models');
 
-const findManyByPk = async (...ids) => {
-  const result = await Product.findAll({
-    where: {
-      id: {
-        [Op.in]: ids,
-      },
-    },
-  });
+// const findManyByPk = async (...ids) => {
+//   const result = await Product.findAll({
+//     where: {
+//       id: {
+//         [Op.in]: ids,
+//       },
+//     },
+//   });
 
-  return result;
-};
+//   return result;
+// };
 
-const getAll = () => Product.findAll();
+// const getAll = () => Product.findAll();
 
-const findByPk = (id) => Product.findByPk(id);
+// const findByPk = (id) => Product.findByPk(id);
 
-const ProductORM = {
-  findManyByPk,
-  getAll,
-  findByPk,
-};
+// const ProductORM = {
+//   findManyByPk,
+//   getAll,
+//   findByPk,
+// };
 
-module.exports = ProductORM;
+// module.exports = ProductORM;

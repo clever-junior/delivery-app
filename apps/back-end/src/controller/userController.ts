@@ -1,17 +1,23 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { Login, SignUp } from "../schemas/userSchema";
-import { createUser, findUserByEmailAndPassword } from "../service/userService";
+import { Login, SignUp } from "../schemas/userSchema.js";
+import { createUser, findUserByEmailAndPassword } from "../service/userService.js";
 
 export async function login(request: FastifyRequest<{ Body: Login }>, reply: FastifyReply) {
   const { email, password } = request.body;
 
-  const { token, error } = await findUserByEmailAndPassword({ email, password });
+  const { user, error } = await findUserByEmailAndPassword({ email, password });
 
   if (error) {
     return reply.status(401).send(error);
   }
 
-  return reply.status(200).send(token);
+  if (!user) {
+    return reply.status(401).send(error);
+  }
+
+  const token = await reply.jwtSign({ payload: { id: user.id, name: user.name, email: user.email, role: user.role }  })
+
+  return reply.status(200).send({ token });
 }
 
 // async index(req, res) {
@@ -38,13 +44,19 @@ export async function login(request: FastifyRequest<{ Body: Login }>, reply: Fas
 export async function signUp(request: FastifyRequest<{ Body: SignUp }>, reply: FastifyReply) {
   const data = request.body;
 
-  const { status, error } = await createUser(data);
+  const { user, error } = await createUser(data);
 
   if (error) {
-    return reply.status(status).send(error)
+    return reply.status(409).send(error)
   }
 
-  return reply.status(status).send("Created");
+  if (!user) {
+    return reply.status(400).send(error);
+  }
+
+  const token = await reply.jwtSign({ payload: { id: user.id, name: user.name, email: user.email, role: user.role } })
+
+  return reply.status(201).send({ token });
 }
 
 // async deleteUser(req, res) {

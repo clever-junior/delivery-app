@@ -3,7 +3,8 @@ import { fastifySwagger } from '@fastify/swagger';
 import { fastifySwaggerUi } from '@fastify/swagger-ui';
 import { fastify } from 'fastify';
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
-import { router } from './routes';
+import jwtPlugin from './plugins/jwtPlugin.js';
+import { router } from './routes/index.js';
 
 const port = Number(process.env.PORT) || 3001;
 
@@ -31,10 +32,8 @@ server.register(fastifySwaggerUi, {
   routePrefix: '/docs',
 });
 
-// Plguin to authentication
-// server.register(fastifyJwt, {
-//   secret: getJwtKey(),
-// });
+// Plugin to authentication
+server.register(jwtPlugin);
 
 // Routes
 router(server);

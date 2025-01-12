@@ -1,15 +1,15 @@
-const imageService = require('../service/imageService');
+// const imageService = require('../service/imageService');
 
-const getImage = async (req, res) => {
-  const { fileName } = req.params;
+// const getImage = async (req, res) => {
+//   const { fileName } = req.params;
 
-  const result = await imageService.getImage(fileName);
+//   const result = await imageService.getImage(fileName);
 
-  res.status(200).send(result);
-};
+//   res.status(200).send(result);
+// };
 
-const imageController = {
-  getImage,
-};
+// const imageController = {
+//   getImage,
+// };
 
-module.exports = imageController;
+// module.exports = imageController;

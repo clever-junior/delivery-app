@@ -1,6 +1,5 @@
-import { create } from "domain";
 import md5 from "md5";
-import { findByEmailAndPassword, findByEmail } from "../model/userModel.js";
+import { create, findByEmail, findByEmailAndPassword } from "../model/userModel.js";
 import { Login, loginSchema, SignUp } from "../schemas/userSchema.js";
 
 export async function findUserByEmailAndPassword(data: Login) {
@@ -17,10 +16,8 @@ export async function findUserByEmailAndPassword(data: Login) {
     const user = await findByEmailAndPassword({ email, password: encryptedPassword });
 
     if (!user) { return { error: "User Not Found" } }
-
-    // const token = generateToken(user);
-
-    return { token: "token" };
+    
+    return { user };
   }
 
 };
@@ -37,17 +34,17 @@ export async function createUser(data: SignUp) {
   const findUser = await findByEmail(email);
 
   if (findUser)
-    return { status: 409, error: "User Already Exists" }
+    return { error: "User Already Exists" }
 
   const encryptedPassword = md5(password);
 
   const user = await create({ name, email, password: encryptedPassword });
 
   if (!user) 
-    return { status: 400, error: "User not created" }
+    return { error: "User not created" }
   // const token = generateToken(data);
 
-  return { status: 201 };
+  return { user };
 };
 
 // export async function createWithRole(data: CreateUser) {

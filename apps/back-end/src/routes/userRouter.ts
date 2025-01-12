@@ -1,7 +1,7 @@
 import z from "zod";
-import { login, signUp } from "../controller/userController";
-import { loginSchema, userRegisterSchema } from "../schemas/userSchema";
-import { FastifyTypedInstance } from "../types";
+import { login, signUp } from "../controller/userController.js";
+import { loginSchema, userRegisterSchema } from "../schemas/userSchema.js";
+import { FastifyTypedInstance } from "../types.js";
 // import verifyToken from "../middlewares/verifyTokenMiddleware";
 
 export async function userRouter(app: FastifyTypedInstance) {
@@ -13,7 +13,9 @@ export async function userRouter(app: FastifyTypedInstance) {
         description: 'Sign in a existent app',
         body: loginSchema, 
         response: {
-          200: z.string().describe('Login successfull'),
+          200: z.object({
+            token: z.string()
+          }).describe('Login successfull'),
           401: z.string().describe('User not found')
         }
       },
@@ -29,7 +31,9 @@ export async function userRouter(app: FastifyTypedInstance) {
         description: 'Sign up a unexistent user',
         body: userRegisterSchema,
         response: {
-          201: z.string().describe('Created'),
+          201: z.object({
+            token: z.string()
+          }).describe('Created'),
           409: z.string().describe('Conflict')
         }
       }
